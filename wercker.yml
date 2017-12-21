@@ -17,10 +17,6 @@
            apt-get install -y curl
 # note the indentation, this is still part of the build pipeline
    after-steps:                    
-     - slack-notifier:
-         url: $SLACK_URL
-         username: werckerbot
-         channel: notifications
  push-2-docker:
    box: nginx:latest
    
@@ -40,7 +36,7 @@
          password: $DOCKER_PASSWORD
          # we want to push both the release image and as the latest
          tag: dev-$WERCKER_GIT_COMMIT latest
-         repository: devopscafe/amusement-park
+         repository: krishnaprdhu/amusement-park
          registry: https://hub.docker.com
          ports: 80 
          cmd: nginx -g 'daemon off';
@@ -58,21 +54,21 @@
      - script:
          name: Stop all running containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker stop ravi-linux || echo ‘failed to stop running container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker stop krishnapardhu-linux || echo ‘failed to stop running container’
      - script:
          name: Remove stopped service/containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rm ravi-linux || echo ‘failed to remove stopped container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rm krishnapardhu-linux || echo ‘failed to remove stopped container’
      - script:
          name: Remove Image behind all service/containers.
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rmi devopscafe/amusement-park:current || echo ‘failed to remove image behind stopped container’
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker rmi krishnapardhu/amusement-park:current || echo ‘failed to remove image behind stopped container’
      - script:
          name: Tag the pulled image
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker tag devopscafe/amusement-park:latest devopscafe/amusement-park:current
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker tag krishnapardhu/amusement-park:latest krishnapardhu/amusement-park:current
      - script:
          name: Start all services/containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 80:80 --name ravi-linux devopscafe/amusement-park:current
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 80:80 --name krishnapardhu-linux krishnapardhu/amusement-park:current
  
