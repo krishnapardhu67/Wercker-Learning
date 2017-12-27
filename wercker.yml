@@ -70,5 +70,5 @@
      - script:
          name: Start all services/containers
          code: |
-           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 80:80 --name krishnapardhu-linux krishnapardhu/amusement-park:current
+           ssh $DEV_REMOTE_USER@$DEV_REMOTE_HOST sudo docker container run --detach -p 113:80 --name krishnapardhu-linux krishnapardhu/amusement-park:current
  
